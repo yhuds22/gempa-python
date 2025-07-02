@@ -22,59 +22,87 @@ st.set_page_config(
 # CSS untuk display
 st.markdown("""
 <style>
-    /* Background utama */
     body {
-        background-color: #f0f2f6 !important;
+        background-color: #e9ecef !important;
+        font-family: 'Arial', sans-serif;
     }
     
-    /* Aplikasi Streamlit */
     .stApp {
-        background-color: #f0f2f6;
+        background-color: #e9ecef;
     }
     
-    /* Container utama */
     .main .block-container {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         padding: 2rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
     
-    /* Header */
     .header {
-        background-color: #2c3e50;
+        background-image: linear-gradient(to right, #007bff, #0056b3);
         color: white;
-        padding: 2rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
+        padding: 50px 20px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     
-    /* Navbar */
-    .navbar {
-        background-color: #34495e !important;
+    .header-title {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
     
-    /* Filter panel */
-    .st-expander {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
+    .header-subtitle {
+        color: rgba(255,255,255,0.9);
+        font-size: 1.2em;
+        margin-bottom: 5px;
     }
     
-    /* Tabel data */
-    .stDataFrame {
-        background-color: white;
-        border-radius: 8px;
+    .nav-menu {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
     }
     
-    /* Footer */
+    .nav-link {
+        padding: 10px 25px;
+        background-color: rgba(255,255,255,0.2);
+        color: white;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.5);
+    }
+    
+    .nav-link:hover {
+        background-color: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+    }
+    
     .footer {
-        background-color: #e0e0e0;
+        background-color: #f8f9fa;
         padding: 1rem;
-        border-radius: 8px;
+        border-radius: 10px;
         margin-top: 2rem;
+        text-align: center;
+    }
+    
+    .data-table-container .stDataFrame thead tr th {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+    
+    .data-table-container .stDataFrame tbody tr {
+        background-color: #f8f9fa;
+    }
+    
+    .data-table-container .stDataFrame tbody tr:hover {
+        background-color: #e2e6ea !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -100,56 +128,10 @@ def get_image_as_base64(path):
     with open(path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode()
 
-
-
 image_path = "./image/peta.jpg"
 image_base64 = get_image_as_base64(image_path)
 
 st.markdown(f"""
-<style>
-.header {{
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("data:image/jpg;base64,{image_base64}");
-    background-size: cover;
-    background-position: center;
-    padding: 50px 20px;
-    margin-bottom: 10px;  /* Mengurangi margin bawah */
-    text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-}}
-.header-title {{
-    color: white !important;
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}}
-.header-subtitle {{
-    color: rgba(255,255,255,0.9);
-    font-size: 1.1em;
-    margin-bottom: 5px;
-}}
-.nav-menu {{
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}}
-.nav-link {{
-    padding: 8px 20px;
-    background-color: rgba(255,255,255,0.2);
-    color: white;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.3);
-}}
-.nav-link:hover {{
-    background-color: rgba(255,255,255,0.3);
-    transform: translateY(-2px);
-}}
-</style>
-
 <div class="header">
     <h1 class="header-title">Visualisasi Data Gempa Bumi</h1>
     <p class="header-subtitle">
@@ -173,7 +155,6 @@ st.markdown('<div id="statistik"></div>', unsafe_allow_html=True)
 st.markdown('<div id="tabel"></div>', unsafe_allow_html=True)
 # Konten tabel di sini...
 
-
 # Deskripsi 
 col_desc, col_stats = st.columns([2, 1])
 
@@ -188,39 +169,37 @@ with col_desc:
         text-align: justify;
     ">
     <p>
-    Indonesia merupakan negara yang berada di kawasan <strong>Cincin Api Pasifik
-                </strong>, yang juga dikenal sebagai salah satu zona tektonik paling aktif di dunia. Di wilayah ini, tiga lempeng utama dunia yaitu 
-                <em>Lempeng Indo Australia</em>, <em>Lempeng Eurasia</em>, dan 
-                <em>Lempeng Pasifik</em> yang saling bertemu dan berinteraksi. Pertemuan dan pergeseran antar lempeng ini memicu terjadinya aktivitas geologi yang sangat intens, terutama gempa bumi dan pergerakan sesar.
+    Indonesia merupakan negara yang berada di kawasan <strong>Cincin Api Pasifik</strong>, yang juga dikenal sebagai salah satu zona tektonik paling aktif di dunia. Di wilayah ini, tiga lempeng utama dunia yaitu 
+    <em>Lempeng Indo Australia</em>, <em>Lempeng Eurasia</em>, dan 
+    <em>Lempeng Pasifik</em> yang saling bertemu dan berinteraksi. Pertemuan dan pergeseran antar lempeng ini memicu terjadinya aktivitas geologi yang sangat intens, terutama gempa bumi dan pergerakan sesar.
     </p>
     <p>
     Dari sekian banyak wilayah di Indonesia, 
-                <strong>Pulau Jawa</strong> dan 
-                <strong>Pulau Sumatera</strong> merupakan dua kawasan yang secara geologis paling rawan terhadap bencana gempa bumi. 
-                Hal ini disebabkan oleh letaknya yang berdekatan langsung dengan zona subduksi (<em>megathrust</em>) yang memanjang dari barat Sumatera hingga ke selatan Jawa. 
-                Zona ini merupakan batas tumbukan antara Lempeng Indo-Australia yang menyusup ke bawah Lempeng Eurasia, 
-                menghasilkan akumulasi energi tektonik yang sewaktu-waktu dapat dilepaskan dalam bentuk gempa bumi besar.
+    <strong>Pulau Jawa</strong> dan 
+    <strong>Pulau Sumatera</strong> merupakan dua kawasan yang secara geologis paling rawan terhadap bencana gempa bumi. 
+    Hal ini disebabkan oleh letaknya yang berdekatan langsung dengan zona subduksi (<em>megathrust</em>) yang memanjang dari barat Sumatera hingga ke selatan Jawa. 
+    Zona ini merupakan batas tumbukan antara Lempeng Indo-Australia yang menyusup ke bawah Lempeng Eurasia, 
+    menghasilkan akumulasi energi tektonik yang sewaktu-waktu dapat dilepaskan dalam bentuk gempa bumi besar.
     </p>
     <p>
     Tak hanya zona megathrust, kedua pulau ini juga dipotong oleh berbagai <strong>sesar aktif</strong>, 
-                seperti <em>Sesar Sumatera</em> yang memanjang dari utara ke selatan Pulau Sumatera, 
-                serta berbagai sesar lokal di Pulau Jawa bagian barat, tengah, dan timur. 
-                Aktivitas sesar ini berkontribusi besar terhadap frekuensi dan intensitas gempa yang terjadi di daratan. 
-                Gempa-gempa yang bersumber dari sesar aktif cenderung terjadi di kedalaman yang dangkal, 
-                sehingga memiliki daya rusak tinggi terhadap permukiman dan infrastruktur.
+    seperti <em>Sesar Sumatera</em> yang memanjang dari utara ke selatan Pulau Sumatera, 
+    serta berbagai sesar lokal di Pulau Jawa bagian barat, tengah, dan timur. 
+    Aktivitas sesar ini berkontribusi besar terhadap frekuensi dan intensitas gempa yang terjadi di daratan. 
+    Gempa-gempa yang bersumber dari sesar aktif cenderung terjadi di kedalaman yang dangkal, 
+    sehingga memiliki daya rusak tinggi terhadap permukiman dan infrastruktur.
     </p>
     <p>
     Kondisi tersebut semakin kompleks karena 
-                <strong>Jawa</strong> dan 
-                <strong>Sumatera</strong> merupakan pusat populasi dan ekonomi nasional. 
-                Pulau Jawa merupakan pulau terpadat di Indonesia, dengan konsentrasi pemukiman, infrastruktur, kawasan industri, pendidikan, dan pemerintahan. 
-                Sementara itu, Pulau Sumatera memiliki peran penting dalam sektor pertanian, perkebunan, logistik, dan energi. 
-                Kepadatan penduduk dan nilai aset yang tinggi di kedua pulau ini menyebabkan risiko bencana menjadi sangat besar, 
-                karena gempa bumi yang terjadi dapat menimbulkan kerugian material, korban jiwa, dan disrupsi sosial dalam skala luas.
+    <strong>Jawa</strong> dan 
+    <strong>Sumatera</strong> merupakan pusat populasi dan ekonomi nasional. 
+    Pulau Jawa merupakan pulau terpadat di Indonesia, dengan konsentrasi pemukiman, infrastruktur, kawasan industri, pendidikan, dan pemerintahan. 
+    Sementara itu, Pulau Sumatera memiliki peran penting dalam sektor pertanian, perkebunan, logistik, dan energi. 
+    Kepadatan penduduk dan nilai aset yang tinggi di kedua pulau ini menyebabkan risiko bencana menjadi sangat besar, 
+    karena gempa bumi yang terjadi dapat menimbulkan kerugian material, korban jiwa, dan disrupsi sosial dalam skala luas.
     </p>
     </div>
     """, unsafe_allow_html=True)
-
 
 with col_stats:
     # Barchart
@@ -295,7 +274,7 @@ with col_stats:
 
 # Filter panel
 with st.expander("Filter Data", expanded=False):
-    col1, col2, col3, = st.columns(3)
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         year_filter = st.selectbox(
@@ -320,7 +299,8 @@ with st.expander("Filter Data", expanded=False):
             max_value=int(gdf['depth'].max()),
             value=(int(gdf['depth'].min()), int(gdf['depth'].max()))
         )
-#Filter Latitude dan Longitude
+
+    # Filter Latitude dan Longitude
     st.subheader("Filter Koordinat")
     col_lat, col_lon = st.columns(2)
     
@@ -370,23 +350,23 @@ def create_map(data):
     for name, url in tiles.items():
         folium.TileLayer(url, attr=name, name=name).add_to(m)
 
-# Tambahkan layer megathrust dari shapefile
+    # Tambahkan layer megathrust dari shapefile
     try:
         megathrust = gpd.read_file("./data/megathrust/megathrust.shp")
         folium.GeoJson(
-        megathrust.to_json(),
-        name='Zona Megathrust',
-        style_function=lambda x: {
-        'color': 'red',
-        'weight': 3,
-        'fillOpacity': 0.1
-    },
-    tooltip=folium.GeoJsonTooltip(
-        fields=['Name'],
-        aliases=['Nama Zona: '],
-        localize=True
-    )
-).add_to(m)
+            megathrust.to_json(),
+            name='Zona Megathrust',
+            style_function=lambda x: {
+                'color': 'red',
+                'weight': 3,
+                'fillOpacity': 0.1
+            },
+            tooltip=folium.GeoJsonTooltip(
+                fields=['Name'],
+                aliases=['Nama Zona: '],
+                localize=True
+            )
+        ).add_to(m)
     except Exception as e:
         st.warning(f"Tidak dapat memuat data megathrust: {e}")
 
@@ -394,20 +374,20 @@ def create_map(data):
     try:
         patahan = gpd.read_file("./data/patahan/patahan.shp")
         folium.GeoJson(
-        patahan.to_json(),
-        name='Zona Patahan',
-        style_function=lambda x: {
-        'color': 'blue',
-        'weight': 2,
-        'dashArray': '5, 5',
-        'fillOpacity': 0.1
-    },
-    tooltip=folium.GeoJsonTooltip(
-        fields=['Name'],
-        aliases=['Nama Patahan: '],
-        localize=True
-    )
-).add_to(m)
+            patahan.to_json(),
+            name='Zona Patahan',
+            style_function=lambda x: {
+                'color': 'blue',
+                'weight': 2,
+                'dashArray': '5, 5',
+                'fillOpacity': 0.1
+            },
+            tooltip=folium.GeoJsonTooltip(
+                fields=['Name'],
+                aliases=['Nama Patahan: '],
+                localize=True
+            )
+        ).add_to(m)
     except Exception as e:
         st.warning(f"Tidak dapat memuat data patahan: {e}")
 
@@ -469,65 +449,3 @@ def create_map(data):
             color='black',
             weight=1,
             fill=True,
-            fill_color=color,
-            fill_opacity=0.8,
-            popup=folium.Popup(popup_content, max_width=300)
-        ).add_to(m)
-    return m
-
-# Display the map
-st.markdown("### Peta Interaktif Kejadian Gempa Bumi", unsafe_allow_html=True)
-map_obj = create_map(filtered_gdf)
-st_folium(
-    map_obj, 
-    width=400,
-    height=600,  
-    use_container_width=True
-)
-
-# Menampilkan tabel data
-st.markdown("""
-<style>
-    /* Styling header tabel */
-    .data-table-container .stDataFrame thead tr th {
-        background-color: #2c3e50 !important;
-        color: white !important;
-    }
-    
-    /* Styling baris tabel */
-    .data-table-container .stDataFrame tbody tr {
-        background-color: #f8f9fa;
-    }
-    
-    /* Efek hover pada baris */
-    .data-table-container .stDataFrame tbody tr:hover {
-        background-color: #e9ecef !important;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# Menampilkan tabel data dengan container
-with st.container():
-    st.markdown('<div class="data-table-container">', unsafe_allow_html=True)
-    
-    st.subheader("Data Gempa")
-    st.dataframe(
-        filtered_gdf[['time', 'mag', 'depth', 'place']].rename(columns={
-            'time': 'Waktu',
-            'mag': 'Magnitudo',
-            'depth': 'Kedalaman (km)',
-            'place': 'Lokasi'
-        }),
-        use_container_width=True
-    )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# Footer
-st.markdown("""
-<hr>
-<div style="text-align: center; color: #6c757d; font-size: 12px; margin-top: 30px;">
-    <p>Data gempa bumi wilayah Pulau Jawa dan Sumatera</p>
-    <p>© 2025 Visualisasi Data Gempa Bumi</p>
-</div>
-""", unsafe_allow_html=True)
