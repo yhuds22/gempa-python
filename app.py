@@ -485,25 +485,11 @@ st_folium(
 )
 
 # Menampilkan tabel data
-st.markdown("""
-<style>
-    /* Styling header tabel */
-    .data-table-container .stDataFrame thead tr th {
-        background-color: #2c3e50 !important;
-        color: white !important;
-    }
-    
-    /* Styling baris tabel */
-    .data-table-container .stDataFrame tbody tr {
-        background-color: #f8f9fa;
-    }
-    
-    /* Efek hover pada baris */
-    .data-table-container .stDataFrame tbody tr:hover {
-        background-color: #e9ecef !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+
+
+
+
+
 
 # Menampilkan tabel data dengan container
 with st.container():
