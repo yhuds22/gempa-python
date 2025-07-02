@@ -18,7 +18,25 @@ st.set_page_config(
     page_icon="🌍",
     layout="wide"
 )
-
+st.markdown("""
+<style>
+    /* Kurangi space bawah peta */
+    .stFolium {
+        margin-bottom: 0 !important;
+    }
+    
+    /* Kurangi space atas tabel */
+    .stDataFrame {
+        margin-top: 10px !important;
+    }
+    
+    /* Hapus padding container utama */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 
@@ -110,6 +128,7 @@ image_base64 = get_image_as_base64(image_path)
 
 st.markdown(f"""
 <style>
+            
 .header {{
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("data:image/jpg;base64,{image_base64}");
     background-size: cover;
