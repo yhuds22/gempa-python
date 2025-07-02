@@ -480,7 +480,7 @@ map_obj = create_map(filtered_gdf)
 st_folium(
     map_obj, 
     width=400,
-    height=600,  
+    height=400,  
     use_container_width=True
 )
 
@@ -493,8 +493,6 @@ st_folium(
 
 # Menampilkan tabel data dengan container
 with st.container():
-    st.markdown('<div class="data-table-container">', unsafe_allow_html=True)
-    
     st.subheader("Data Gempa")
     st.dataframe(
         filtered_gdf[['time', 'mag', 'depth', 'place']].rename(columns={
@@ -505,8 +503,6 @@ with st.container():
         }),
         use_container_width=True
     )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
