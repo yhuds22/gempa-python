@@ -503,7 +503,6 @@ map_obj = create_map(filtered_gdf)
 st_folium(
     map_obj, 
     width=400,
-    height=200,  
     use_container_width=True
 )
 
