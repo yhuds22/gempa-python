@@ -19,12 +19,16 @@ st.set_page_config(
     layout="wide"
 )
 
+
+
+
 # CSS untuk display
 st.markdown("""
 <style>
     /* Background utama */
     body {
         background-color: #f0f2f6 !important;
+        height :30%;
     }
     
     /* Aplikasi Streamlit */
@@ -480,7 +484,7 @@ map_obj = create_map(filtered_gdf)
 st_folium(
     map_obj, 
     width=400,
-    height=400,  
+    height=600,  
     use_container_width=True
 )
 
