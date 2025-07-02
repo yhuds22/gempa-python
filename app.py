@@ -441,7 +441,7 @@ def create_map(data):
             </div>
         </div>
         """
-        
+       
         # Add marker to map
         folium.CircleMarker(
             location=[eq['latitude'], eq['longitude']],
@@ -449,3 +449,65 @@ def create_map(data):
             color='black',
             weight=1,
             fill=True,
+            fill_color=color,
+            fill_opacity=0.8,
+            popup=folium.Popup(popup_content, max_width=300)
+        ).add_to(m)
+    return m
+
+# Display the map
+st.markdown("### Peta Interaktif Kejadian Gempa Bumi", unsafe_allow_html=True)
+map_obj = create_map(filtered_gdf)
+st_folium(
+    map_obj, 
+    width=400,
+    height=600,  
+    use_container_width=True
+)
+
+# Menampilkan tabel data
+st.markdown("""
+<style>
+    /* Styling header tabel */
+    .data-table-container .stDataFrame thead tr th {
+        background-color: #2c3e50 !important;
+        color: white !important;
+    }
+    
+    /* Styling baris tabel */
+    .data-table-container .stDataFrame tbody tr {
+        background-color: #f8f9fa;
+    }
+    
+    /* Efek hover pada baris */
+    .data-table-container .stDataFrame tbody tr:hover {
+        background-color: #e9ecef !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Menampilkan tabel data dengan container
+with st.container():
+    st.markdown('<div class="data-table-container">', unsafe_allow_html=True)
+    
+    st.subheader("Data Gempa")
+    st.dataframe(
+        filtered_gdf[['time', 'mag', 'depth', 'place']].rename(columns={
+            'time': 'Waktu',
+            'mag': 'Magnitudo',
+            'depth': 'Kedalaman (km)',
+            'place': 'Lokasi'
+        }),
+        use_container_width=True
+    )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+<hr>
+<div style="text-align: center; color: #6c757d; font-size: 12px; margin-top: 30px;">
+    <p>Data gempa bumi wilayah Pulau Jawa dan Sumatera</p>
+    <p>© 2025 Visualisasi Data Gempa Bumi</p>
+</div>
+""", unsafe_allow_html=True)
