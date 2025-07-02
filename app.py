@@ -100,7 +100,9 @@ def get_image_as_base64(path):
     with open(path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode()
 
-image_path = "./image/peta.JPG"
+
+
+image_path = "./image/peta.jpg"
 image_base64 = get_image_as_base64(image_path)
 
 st.markdown(f"""
